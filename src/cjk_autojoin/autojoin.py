@@ -22,9 +22,22 @@ CJK_CHAR = r"[\u3000-\u30ff\u4e00-\u9fff]"
 JOIN_PATTERN = re.compile(f"({CJK_CHAR})\n *({CJK_CHAR})|([、。，．])\n *(\\S)")  # noqa: RUF001
 
 
+def is_list_item(text: Any) -> bool:
+    if not isinstance(text, str) or not text:
+        return False
+
+    return text[0] in ["-", "*"] or "0" <= text[0] <= "9"
+
+
 def replace(match: re.Match[str]) -> str:
     if match.group(1) is not None:  # AUTOJOIN_PATTERN matched
         return f"{match.group(1)}{match.group(2)}"
+
+    suffix = match.group(4)
+
+    if is_list_item(suffix):
+        return match.group(0)
+
     return f"{match.group(3)}{match.group(4)}"
 
 

@@ -78,3 +78,21 @@ def test_punctuation(md: Markdown, p: str) -> None:
     text = f"これは{p}\n  abcです。"
     expected = f"<p>これは{p}abcです。</p>"
     assert md.convert(text) == expected
+
+
+@pytest.mark.parametrize("p", ["、", "。", "，", "．"])  # noqa: RUF001
+@pytest.mark.parametrize("m", ["-", "*", "0.", "9."])
+def test_punctuation_list(md: Markdown, p: str, m: str) -> None:
+    text = f"{m} あ{p}\n{m} い\n  う{p}\n{m} え"
+    html = md.convert(text)
+
+    tag = "ul" if m in ["-", "*"] else "ol"
+
+    expected = f"""\
+        <{tag}>
+        <li>あ{p}</li>
+        <li>いう{p}</li>
+        <li>え</li>
+        </{tag}>"""
+
+    assert html == textwrap.dedent(expected)
