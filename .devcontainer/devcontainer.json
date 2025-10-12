@@ -1,0 +1,36 @@
+{
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/nvidia-cuda:2": {
+      "cudaVersion": "12.9",
+      "installCudnn": true,
+      "installCudnnDev": true,
+      "installToolkit": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers-extra/features/starship:1": {}
+  },
+  "runArgs": ["--gpus", "all"],
+  "hostRequirements": {
+    "gpu": "optional"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "charliermarsh.ruff",
+        "detachhead.basedpyright",
+        "fill-labs.dependi",
+        "markis.code-coverage",
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+  "mounts": [
+    "source=/etc/localtime,target=/etc/localtime,type=bind,consistency=cached",
+    "source=/etc/timezone,target=/etc/timezone,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": ".devcontainer/postCreate.sh"
+}

@@ -1,0 +1,37 @@
+# Project Plan: pymdownx-cjk-autojoin
+
+## 1. Problem Statement
+
+When writing Japanese (or other CJK languages) in Markdown, using semantic line
+breaks for `git diff` readability introduces unwanted spaces in the final HTML output.
+This is because Markdown parsers traditionally convert a single newline character into a space.
+
+The goal is to support semantic line breaks in the source file while producing clean
+HTML with no extra spaces between CJK characters.
+
+## 2. Solution
+
+Develop a new, standalone `Python-Markdown` extension.
+
+- **Project Name**: `pymdownx-cjk-autojoin`
+- **Core Functionality**: The extension will act as a preprocessor for `Python-Markdown`.
+  - It will use a regular expression to find patterns of `[CJK character] + [newline] + [CJK character]`.
+  - It will remove the newline character from these matches before the main parser processes the text.
+- **Benefit**: Source files remain readable and diff-friendly, while the HTML output is typographically correct.
+
+## 3. Next Steps
+
+- Create a new project directory for `pymdownx-cjk-autojoin` at `/workspaces/pymdownx-cjk-autojoin`.
+- Set up the basic project structure:
+  ```
+  pymdownx-cjk-autojoin/
+  ├── src/
+  │   └── pymdownx_cjk_autojoin/
+  │       ├── __init__.py
+  │       └── autojoin.py
+  ├── pyproject.toml
+  ├── README.md
+  └── tests/
+      └── test_autojoin.py
+  ```
+- Begin implementation of the extension logic.
