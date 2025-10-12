@@ -33,9 +33,7 @@ def replace(match: re.Match[str]) -> str:
     if match.group(1) is not None:  # AUTOJOIN_PATTERN matched
         return f"{match.group(1)}{match.group(2)}"
 
-    suffix = match.group(4)
-
-    if is_list_item(suffix):
+    if is_list_item(match.group(4)):
         return match.group(0)
 
     return f"{match.group(3)}{match.group(4)}"

@@ -96,3 +96,10 @@ def test_punctuation_list(md: Markdown, p: str, m: str) -> None:
         </{tag}>"""
 
     assert html == textwrap.dedent(expected)
+
+
+def test_is_list_item() -> None:
+    from cjk_autojoin.autojoin import is_list_item
+
+    assert not is_list_item(None)
+    assert not is_list_item("")
