@@ -3,10 +3,10 @@ import textwrap
 import pytest
 from markdown import Markdown
 
-from pymdownx_cjk_autojoin.autojoin import CjkAutojoinExtension
+from cjk_autojoin.autojoin import CjkAutojoinExtension
 
 
-@pytest.fixture(params=[CjkAutojoinExtension(), "pymdownx_cjk_autojoin"])
+@pytest.fixture(params=[CjkAutojoinExtension(), "cjk_autojoin"])
 def extension(request: pytest.FixtureRequest) -> CjkAutojoinExtension | str:
     return request.param
 
@@ -56,8 +56,8 @@ def test_fenced_code(md: Markdown) -> None:
 @pytest.mark.parametrize(
     "extensions",
     [
-        ["pymdownx.superfences", "pymdownx_cjk_autojoin"],
-        ["pymdownx_cjk_autojoin", "pymdownx.superfences"],
+        ["pymdownx.superfences", "cjk_autojoin"],
+        ["cjk_autojoin", "pymdownx.superfences"],
     ],
 )
 def test_super_fences(extensions: list[str]) -> None:
