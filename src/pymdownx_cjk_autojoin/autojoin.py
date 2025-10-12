@@ -14,20 +14,24 @@ from markdown.preprocessors import Preprocessor
 # \u3040-\u309f: Hiragana
 # \u30a0-\u30ff: Katakana
 # \u4e00-\u9fff: CJK Unified Ideographs
-CJK_CHAR_PATTERN = r"[\u3000-\u30ff\u4e00-\u9fff]"
+CJK_CHAR = r"[\u3000-\u30ff\u4e00-\u9fff]"
 
 # CJK_CHAR + newline + space* + CJK_CHAR
-REPLACE_PATTERN = re.compile(f"({CJK_CHAR_PATTERN})\\n *({CJK_CHAR_PATTERN})")
+# OR
+# PUNCTUATION_ + newline + space* + CHAR
+JOIN_PATTERN = re.compile(f"({CJK_CHAR})\n *({CJK_CHAR})|([、。，．])\n *(\\S)")  # noqa: RUF001
 
 
 def replace(match: re.Match[str]) -> str:
-    return f"{match.group(1)}{match.group(2)}"
+    if match.group(1) is not None:  # AUTOJOIN_PATTERN matched
+        return f"{match.group(1)}{match.group(2)}"
+    return f"{match.group(3)}{match.group(4)}"
 
 
 class CjkAutojoinPreprocessor(Preprocessor):
     def run(self, lines: list[str]) -> list[str]:
         text = "\n".join(lines)
-        text = astdoc.markdown.sub(REPLACE_PATTERN, replace, text)
+        text = astdoc.markdown.sub(JOIN_PATTERN, replace, text)
         return text.split("\n")
 
 

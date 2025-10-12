@@ -71,3 +71,10 @@ def test_super_fences(extensions: list[str]) -> None:
     </code></pre></div>"""
 
     assert html == textwrap.dedent(expected)
+
+
+@pytest.mark.parametrize("p", ["、", "。", "，", "．"])  # noqa: RUF001
+def test_punctuation(md: Markdown, p: str) -> None:
+    text = f"これは{p}\n  abcです。"
+    expected = f"<p>これは{p}abcです。</p>"
+    assert md.convert(text) == expected
