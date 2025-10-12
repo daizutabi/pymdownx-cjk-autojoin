@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "pymdownx-cjk-autojoin"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python-Markdown extension to automatically join CJK characters separated by semantic line breaks."
 readme = "README.md"
 license = { file = "LICENSE" }
