@@ -42,8 +42,7 @@ def test_list(md: Markdown) -> None:
     assert html == textwrap.dedent(expected)
 
 
-def test_fenced_code() -> None:
-    md = Markdown()
+def test_fenced_code(md: Markdown) -> None:
     text = "```\nあ\nい\n```"
     html = md.convert(text)
 

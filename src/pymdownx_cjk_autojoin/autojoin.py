@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+import astdoc.markdown
 from markdown import Extension, Markdown
 from markdown.preprocessors import Preprocessor
 
@@ -15,29 +16,26 @@ from markdown.preprocessors import Preprocessor
 # \u4e00-\u9fff: CJK Unified Ideographs
 CJK_CHAR_PATTERN = r"[\u3000-\u30ff\u4e00-\u9fff]"
 
+# CJK_CHAR + newline + space* + CJK_CHAR
+REPLACE_PATTERN = re.compile(f"({CJK_CHAR_PATTERN})\\n *({CJK_CHAR_PATTERN})")
+
+
+def replace(match: re.Match[str]) -> str:
+    return f"{match.group(1)}{match.group(2)}"
+
 
 class CjkAutojoinPreprocessor(Preprocessor):
     def run(self, lines: list[str]) -> list[str]:
         text = "\n".join(lines)
-
-        # Use re.sub to find CJK_CHAR + newline + CJK_CHAR and remove the newline
-        # The ( ) create capturing groups, and \1\2 refers to the captured groups.
-        # This effectively removes the newline between two CJK characters.
-        processed_text = re.sub(
-            f"({CJK_CHAR_PATTERN})\\n *({CJK_CHAR_PATTERN})",
-            r"\1\2",
-            text,
-        )
-
-        # Split the processed text back into lines
-        return processed_text.split("\n")
+        text = astdoc.markdown.sub(REPLACE_PATTERN, replace, text)
+        return text.split("\n")
 
 
 class CjkAutojoinExtension(Extension):
     def extendMarkdown(self, md: Markdown) -> None:
         """Add CjkAutojoinPreprocessor to the Markdown instance."""
-        # Priority 27 is before 'fenced_code_blocks' (30) and after 'header' (20)
-        # cjk_autojoin runs before block-level parsing but after basic line processing.
+        # Priority 27: Runs after NormalizeWhitespace (priority 30) and
+        # before HtmlBlockPreprocessor (priority 20).
         md.preprocessors.register(CjkAutojoinPreprocessor(md), "cjk_autojoin", 27)
 
 
