@@ -6,6 +6,29 @@
 [![Coverage Status][codecov-image]][codecov-link]
 [![Documentation Status][docs-image]][docs-link]
 
+A Python-Markdown extension to automatically join CJK characters separated by semantic line breaks.
+
+## Installation
+
+```bash
+pip install pymdownx-cjk-autojoin
+```
+
+## Usage
+
+```python
+import markdown
+
+md = markdown.Markdown(extensions=["cjk_autojoin"])
+```
+
+To use in MkDocs, register the extension in `mkdocs.yml`.
+
+```yaml
+markdown_extensions:
+  - cjk_autojoin
+```
+
 <!-- Badges -->
 
 [pypi-v-image]: https://img.shields.io/pypi/v/pymdownx-cjk-autojoin.svg
