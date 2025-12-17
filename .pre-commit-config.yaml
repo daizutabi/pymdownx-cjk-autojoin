@@ -26,4 +26,4 @@ repos:
         name: ty check
         entry: uv run ty check
         language: python
-        files: ^(src|tests)/
+        files: \.py$
